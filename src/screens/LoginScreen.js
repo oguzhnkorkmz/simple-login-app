@@ -16,13 +16,18 @@ const LoginScreen = ({ navigation }) => {
   // username ve password state'leri
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // Hata mesajı durumu
 
   // Giriş butonuna basıldığında çağrılır
   const handleLogin = () => {
     // Boş olmayan kullanıcı adı ve şifre kontrolü
-    if (username.trim() && password.trim()) {
-      // UserList ekranına geçiş ve username bilgisini gönderme
+    if (username.trim() === 'admin' && password.trim() === '123') {
+      // Doğru ise UserList ekranına geçiş
       navigation.navigate('UserList', { username });
+      setError(''); // Hata mesajını sıfırlama
+    } else {
+      // Yanlışsa hata mesajı göster
+      setError('Kullanıcı adı veya şifre yanlış');
     }
   };
 
@@ -60,6 +65,9 @@ const LoginScreen = ({ navigation }) => {
             secureTextEntry
           />
 
+          {/* Hata mesajı */}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
           {/* Giriş Yap butonu */}
           <LoginButton onPress={handleLogin} />
         </KeyboardAvoidingView>
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, // Yatayda kenarlardan boşluk
   },
   inner: {
-    flex: 0.4, // Ekranın %40'ını kapla
+    flex: 0.65, // Ekranın %40'ını kapla
     backgroundColor: '#fff', // Beyaz kart arkası
     borderRadius: 12, // Yuvarlak köşeler
     paddingVertical: 30, // İç dikey boşluk
@@ -113,6 +121,11 @@ const styles = StyleSheet.create({
     marginBottom: 12, // Alt boşluk
     borderWidth: 1,
     borderColor: '#ddd', // İnce gri border
+  },
+  errorText: {
+    color: 'red', // Hata mesajı rengi kırmızı
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });
 
